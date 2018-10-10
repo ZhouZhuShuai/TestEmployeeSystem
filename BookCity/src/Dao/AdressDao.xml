@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Dao.AdressDao">
+<insert id="add" >
+
+insert into adress(detail,provinceID,cityID,areaID,phone,name,user_id,zhuchu) values(#{adress.detail},#{adress.province.provinceID},#{adress.city.cityID},#{adress.area.areaID},#{adress.phone},#{adress.name},#{adress.user_id},#{adress.zhuchu})
+</insert>
+
+<select id="searchByUserId" resultMap="adress">
+	select a.*,p.province,c.city,area.area from adress as a
+	left join t_province as p on p.provinceID = a.provinceID
+	left join t_city as c on a.cityID = c.cityID
+	left join t_area as area on area.areaID=a.areaID
+	where a.user_id=#{user_id} 
+
+
+</select>
+<delete id="deleteById">
+delete from adress where id = #{id}
+</delete>
+<resultMap type="Entity.Adress" id="adress">
+<id  property="id"  column="id" />
+<result    property="detail"  column="detail"/>
+<result    property="phone"  column="phone"/>
+<result    property="name"  column="name"/>
+<result    property="user_id"  column="user_id"/>
+<result    property="zhuchu"  column="zhuchu"/>
+
+
+<association property="province" javaType="Entity.Province">
+
+<result    property="province"  column="province"/>
+
+</association>
+<association property="city" javaType="Entity.City">
+
+<result    property="city"  column="city"/>
+
+</association>
+<association property="area" javaType="Entity.Area">
+
+<result    property="area"  column="area"/>
+
+</association>
+</resultMap>
+
+
+
+</mapper> 

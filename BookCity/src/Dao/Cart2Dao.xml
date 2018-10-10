@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Dao.Cart2Dao">
+	<insert id="add">
+
+		insert into cart2(cart1_id,count,xiaoji,product_id)
+		values(#{cart1_id},#{count},#{xiaoji},#{product_id})
+
+	</insert>
+	<select id="searchByCart1_idAndProduct_id" resultType="int">
+		select
+		count(*) from cart2 where cart1_id=#{cart1_id} and
+		product_id=#{product_id}
+
+
+	</select>
+	<select id="searchCount" resultType="int">
+
+		select count from cart2 where cart1_id=#{cart1_id} and
+		product_id=#{product_id}
+
+	</select>
+	<select id="searchByIds" resultMap="Cart2AndProduct">
+
+		select c1.id as c1_id,c1.zongji, c2.id as c2_id,
+		c2.cart1_id,c2.count,c2.xiaoji,c2.product_id, p.* from cart2 as c2
+		left join product as p
+		on p.id=c2.product_id
+		left join cart1 as c1
+		on c1.id=c2.cart1_id
+		where c2.id in(${ids})
+
+
+	</select>
+	<select id="searchById" resultMap="Cart2AndProduct2">
+		select * from cart2 where id = #{id}
+	</select>
+	<delete id="deleteById">
+
+		delete from cart2 where id = #{cart2Id}
+
+	</delete>
+	<delete id="deleteByIds">
+		delete from cart2 where id in(${cart2Ids})
+
+	</delete>
+	<update id="update">
+		update cart2 set count=#{count4},xiaoji=#{xiaoji} where cart1_id=#{cart1_id}
+		and product_id=#{product_id}
+
+
+	</update>
+	<update id="updateCountAndXiaoji">
+
+		update cart2 set count=#{count},xiaoji=#{xiaoji} where id=#{cart2Id}
+
+	</update>
+	<select id="searchBycart1Id" resultMap="Cart2AndProduct">
+
+		select c1.id as c1_id,c1.zongji, c2.id as c2_id,
+		c2.cart1_id,c2.count,c2.xiaoji,c2.product_id, p.* from cart2 as c2
+		left join product as p
+		on p.id=c2.product_id
+		left join cart1 as c1
+		on c1.id=c2.cart1_id
+		where c2.cart1_id=#{cart1_id}
+
+	</select>
+	<resultMap type="Entity.Cart2" id="Cart2AndProduct">
+		<id property="id" column="c2_id" />
+		<result property="count" column="count" />
+		<result property="xiaoji" column="xiaoji" />
+
+
+
+		<association property="cart1" javaType="Entity.Cart1">
+			<id property="id" column="c1_id" />
+			<result property="zongji" column="zongji" />
+
+		</association>
+		<association property="product" javaType="Entity.Product">
+			<id property="id" column="id" />
+			<result property="name" column="name" />
+			<result property="price" column="price" />
+			<result property="detail" column="detail" />
+			<result property="author" column="author" />
+			<result property="stock" column="stock" />
+			<result property="sales_volume" column="sales_volume" />
+			<result property="photo" column="photo" />
+
+
+
+		</association>
+	</resultMap>
+	<resultMap type="Entity.Cart2" id="Cart2AndProduct2">
+		<id property="id" column="id" />
+		<result property="count" column="count" />
+		<result property="xiaoji" column="xiaoji" />
+
+
+
+		
+		<association property="product" javaType="Entity.Product">
+			<id property="id" column="product_id" />
+			<!-- <result property="name" column="name" />
+			<result property="price" column="price" />
+			<result property="detail" column="detail" />
+			<result property="author" column="author" />
+			<result property="stock" column="stock" />
+			<result property="sales_volume" column="sales_volume" />
+			<result property="photo" column="photo" />
+ -->
+
+
+		</association>
+	</resultMap>
+
+
+
+</mapper> 

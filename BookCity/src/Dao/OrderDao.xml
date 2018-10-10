@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Dao.OrderDao">
+
+	<insert id="add" useGeneratedKeys="true" keyProperty="order1.id">
+		insert into order1(order_no,user_id,payment,shipping_id,payment_time)
+		values(#{order1.order_no},#{order1.user_id},#{order1.payment},#{order1.adress.id},#{order1.payment_time})
+	</insert>
+	<select id="searchByUserId" resultMap="AdressAndOrderAndOrder2">
+		select o.*,a.name,a.id as aId from order1 as o left join adress
+		as a on a.id=o.shipping_id
+		
+		
+		where o.user_id=#{user_id}
+
+	</select>
+	<resultMap type="Entity.Order1" id="AdressAndOrderAndOrder2">
+		<id property="id" column="id" />
+		<result property="order_no" column="order_no" />
+		<result property="user_id" column="user_id" />
+		<result property="payment" column="payment" />
+		<result property="payment_time" column="payment_time" />
+		<association property="adress" javaType="Entity.Adress">
+			<id property="id" column="aId" />
+			<result property="name" column="name" />
+
+		</association>
+		<collection property="order2List" javaType="ArrayList"
+			ofType="Entity.Order2"  column="id" select="Dao.Order2Dao.searchByOrder1_id"/>
+			<!-- <id property="id" column="id1" />
+			<result property="order2_product_count" column="order2_product_count" />
+
+			<association property="product" javaType="Entity.Product">
+				<id property="id" column="id" />
+				<result property="name" column="name" />
+				<result property="price" column="price" />
+				<result property="detail" column="detail" />
+				<result property="author" column="author" />
+				<result property="stock" column="stock" />
+				<result property="sales_volume" column="sales_volume" />
+				<result property="photo" column="photo" />
+
+
+			</association> -->
+
+
+		
+	</resultMap>
+
+
+
+</mapper> 

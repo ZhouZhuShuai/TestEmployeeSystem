@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Dao.Order2Dao">
+
+<insert id="add" >
+	insert into order2(order1_id,product_id,order2_xiaoji,order2_product_count) values(#{order2.order1_id},#{order2.product.id},#{order2.order2_xiaoji},#{order2.order2_product_count})
+</insert>
+ <select id="searchByOrder1_id" resultMap="Order2AndProduct">
+	select * from order2 
+	where order1_id=#{order1_id}
+
+</select>
+<resultMap type="Entity.Order2" id="Order2AndProduct">
+<id  property="id"  column="id" />
+<result    property="order2_xiaoji"  column="order2_xiaoji"/>
+<result    property="order2_product_count"  column="order2_product_count"/>
+
+
+
+
+<association property="product" javaType="Entity.Product" column="product_id" select="Dao.ProductDao.searchById" />
+
+
+
+
+</resultMap> 
+
+
+
+</mapper> 

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Dao.ProductDao">
+<select id="searchCount" resultType="int">
+	select count(*) from product  where 1=1
+	<if test="product.category!=null and product.category.id!=null">
+	and category_id=#{product.category.id}
+	</if>
+
+
+</select>
+<select id="search" resultType="Entity.Product">
+ 
+	select * from product  where 1=1
+	
+	<if test="product.category!=null and product.category.id!=null">
+	and category_id=#{product.category.id}
+	</if>
+	
+	
+	
+	
+	 limit #{begin},#{size}
+
+</select>
+<select id="searchById" resultMap="ProductAndCategory">
+	select p.* ,c.name as categoryName from product as p left join category as c on c.id=p.category_id where p.id = #{id}
+
+
+
+</select>
+<resultMap type="Entity.Product" id="ProductAndCategory">
+<id  property="id"  column="id" />
+<result    property="name"  column="name"/>
+<result    property="price"  column="price"/>
+<result    property="detail"  column="detail"/>
+<result    property="author"  column="author"/>
+<result    property="stock"  column="stock"/>
+<result    property="sales_volume"  column="sales_volume"/>
+<result    property="photo"  column="photo"/>
+
+
+<association property="category" javaType="Entity.Category">
+<id  property="id"  column="category_id" />
+<result    property="name"  column="categoryName"/>
+
+</association>
+</resultMap>
+
+</mapper> 
+    
